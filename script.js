@@ -7,7 +7,7 @@ function loadFile(event) {
         complete: function(results) {
             originalData = results.data;
             displayCards(originalData);
-            document.getElementById('filterContainer').style.display = 'flex';
+            document.getElementById('filterContainer').style.display = 'block';
         }
     });
 }
@@ -18,8 +18,8 @@ function applySorting() {
 
     if (sortOrder !== 'none') {
         sortedData.sort((a, b) => {
-            const viewsA = parseInt(a['Views'].replace(/,/g, ''));
-            const viewsB = parseInt(b['Views'].replace(/,/g, ''));
+            const viewsA = parseInt(a['Views']);
+            const viewsB = parseInt(b['Views']);
             return sortOrder === 'ascending' ? viewsA - viewsB : viewsB - viewsA;
         });
     }
@@ -27,31 +27,29 @@ function applySorting() {
     displayCards(sortedData);
 }
 
+function formatNumber(number) {
+    return new Intl.NumberFormat('en-US').format(number);
+}
+
 function displayCards(data) {
     const cardsContainer = document.getElementById('cards');
     cardsContainer.innerHTML = '';
-    data.forEach(video => {
+    data.forEach((video) => {
         const card = document.createElement('div');
         card.className = 'card';
-        const thumbnailUrl = `https://img.youtube.com/vi/${video['Video Id']}/mqdefault.jpg`;
+        const thumbnailUrl = `https://img.youtube.com/vi/${video['Video Id']}/0.jpg`;
         card.innerHTML = `
-            <img src="${thumbnailUrl}" alt="${video['Title']}">
+            <img src="${thumbnailUrl}" alt="${video['Title']}" class="thumbnail">
             <div class="card-content">
-                <div class="card-title">
-                    <a href="https://www.youtube.com/watch?v=${video['Video Id']}" target="_blank">${video['Title']}</a>
-                </div>
-                <div class="card-channel">${video['Channel N']}</div>
-                <div class="card-views">${parseInt(video['Views']).toLocaleString()} views</div>
+                <a href="https://www.youtube.com/watch?v=${video['Video Id']}" target="_blank" class="card-title">${video['Title']}</a>
+                <div class="card-subtitle">${formatNumber(video['Views'])} views</div>
             </div>
         `;
         cardsContainer.appendChild(card);
     });
 }
 
-document.getElementById('csvFileInput').addEventListener('change', loadFile);
-document.getElementById('sortOrder').addEventListener('change', applySorting);
-
-// Theme switcher
+// Dark mode toggle
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
 
 function switchTheme(e) {
@@ -66,10 +64,14 @@ function switchTheme(e) {
 
 toggleSwitch.addEventListener('change', switchTheme, false);
 
+// Check for saved user preference, if any, on load of the website
 const currentTheme = localStorage.getItem('theme');
 if (currentTheme) {
     document.body.classList[currentTheme === 'dark' ? 'add' : 'remove']('dark-mode');
-    toggleSwitch.checked = currentTheme === 'dark';
+
+    if (currentTheme === 'dark') {
+        toggleSwitch.checked = true;
+    }
 }
 
 // Initialize
