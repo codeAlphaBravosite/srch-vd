@@ -27,7 +27,7 @@ body.dark-mode h1 {
     color: #ffffff;
 }
 
-#csvFileInput, #sortOrder {
+#csvFileInput, #subscriberSort, #viewSort {
     padding: 10px;
     margin-bottom: 20px;
     border-radius: 4px;
@@ -37,13 +37,14 @@ body.dark-mode h1 {
     max-width: 300px;
 }
 
-#csvFileInput:focus, #sortOrder:focus {
+#csvFileInput:focus, #subscriberSort:focus, #viewSort:focus {
     outline: none;
     border-color: #1a73e8;
 }
 
 body.dark-mode #csvFileInput,
-body.dark-mode #sortOrder {
+body.dark-mode #subscriberSort,
+body.dark-mode #viewSort {
     background-color: #272727;
     color: #ffffff;
     border-color: #3f3f3f;
@@ -56,6 +57,18 @@ body.dark-mode #sortOrder {
     margin-bottom: 20px;
     width: 100%;
     max-width: 300px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.filter-group label {
+    margin-bottom: 5px;
+    font-size: 14px;
 }
 
 #cards {
@@ -116,7 +129,7 @@ body.dark-mode .card-title {
 .card-subtitle {
     font-size: 12px;
     color: #606060;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
 body.dark-mode .card-subtitle {
@@ -128,6 +141,7 @@ body.dark-mode .card-subtitle {
     align-items: center;
     font-size: 12px;
     color: #606060;
+    margin-top: 8px;
 }
 
 body.dark-mode .viewed-checkbox {
