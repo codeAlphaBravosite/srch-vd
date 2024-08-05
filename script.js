@@ -27,33 +27,25 @@ function applyFilters() {
     let filteredData = [...originalData];
 
     filteredData.sort((a, b) => {
-        let subscriberComparison = 0;
-        let viewComparison = 0;
+        let subscriberScore = 0;
+        let viewScore = 0;
 
-        // Compare subscribers
+        // Calculate subscriber score
         if (subscriberSort !== 'none') {
             const subsA = a['Subscriber'] === 'N/A' ? -1 : parseInt(a['Subscriber']);
             const subsB = b['Subscriber'] === 'N/A' ? -1 : parseInt(b['Subscriber']);
-            subscriberComparison = subscriberSort === 'ascending' ? subsA - subsB : subsB - subsA;
+            subscriberScore = subscriberSort === 'ascending' ? subsA - subsB : subsB - subsA;
         }
 
-        // Compare views
+        // Calculate view score
         if (viewSort !== 'none') {
             const viewsA = parseInt(a['Views'] || 0);
             const viewsB = parseInt(b['Views'] || 0);
-            viewComparison = viewSort === 'ascending' ? viewsA - viewsB : viewsB - viewsA;
+            viewScore = viewSort === 'ascending' ? viewsA - viewsB : viewsB - viewsA;
         }
 
-        // Prioritize subscriber sort, then view sort
-        if (subscriberSort !== 'none' && viewSort !== 'none') {
-            return subscriberComparison || viewComparison;
-        } else if (subscriberSort !== 'none') {
-            return subscriberComparison;
-        } else if (viewSort !== 'none') {
-            return viewComparison;
-        }
-
-        return 0; // No sorting if both are 'none'
+        // Combine scores
+        return subscriberScore + viewScore;
     });
 
     displayCards(filteredData);
