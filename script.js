@@ -5,7 +5,11 @@ function loadFile(event) {
     Papa.parse(file, {
         header: true,
         complete: function(results) {
-            originalData = results.data;
+            originalData = results.data.map(item => ({
+                ...item,
+                Subscribers: item.Subscribers || 'N/A',
+                Views: item.Views || '0'
+            }));
             displayCards(originalData);
             document.getElementById('filterContainer').style.display = 'flex';
         },
@@ -25,8 +29,8 @@ function applyFilters() {
     filteredData.sort((a, b) => {
         let comparison = 0;
         if (subscriberSort !== 'none') {
-            const subsA = parseInt(a['Subscribers'] || 0);
-            const subsB = parseInt(b['Subscribers'] || 0);
+            const subsA = a['Subscribers'] === 'N/A' ? -1 : parseInt(a['Subscribers']);
+            const subsB = b['Subscribers'] === 'N/A' ? -1 : parseInt(b['Subscribers']);
             comparison = subscriberSort === 'ascending' ? subsA - subsB : subsB - subsA;
         }
         if (comparison === 0 && viewSort !== 'none') {
@@ -41,7 +45,7 @@ function applyFilters() {
 }
 
 function formatNumber(number) {
-    if (number === undefined || number === null) return 'N/A';
+    if (number === 'N/A') return 'N/A';
     number = parseInt(number);
     if (isNaN(number)) return 'N/A';
     
