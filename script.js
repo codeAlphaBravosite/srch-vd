@@ -12,19 +12,28 @@ function loadFile(event) {
     });
 }
 
-function applySorting() {
-    const sortOrder = document.getElementById('sortOrder').value;
-    let sortedData = [...originalData];
+function applyFilters() {
+    const subscriberSort = document.getElementById('subscriberSort').value;
+    const viewSort = document.getElementById('viewSort').value;
+    
+    let filteredData = [...originalData];
 
-    if (sortOrder !== 'none') {
-        sortedData.sort((a, b) => {
+    filteredData.sort((a, b) => {
+        let comparison = 0;
+        if (subscriberSort !== 'none') {
+            const subsA = parseInt(a['Subscribers']);
+            const subsB = parseInt(b['Subscribers']);
+            comparison = subscriberSort === 'ascending' ? subsA - subsB : subsB - subsA;
+        }
+        if (comparison === 0 && viewSort !== 'none') {
             const viewsA = parseInt(a['Views']);
             const viewsB = parseInt(b['Views']);
-            return sortOrder === 'ascending' ? viewsA - viewsB : viewsB - viewsA;
-        });
-    }
+            comparison = viewSort === 'ascending' ? viewsA - viewsB : viewsB - viewsA;
+        }
+        return comparison;
+    });
 
-    displayCards(sortedData);
+    displayCards(filteredData);
 }
 
 function formatNumber(number) {
@@ -44,6 +53,7 @@ function displayCards(data) {
             <div class="card-content">
                 <a href="https://www.youtube.com/watch?v=${video['Video Id']}" target="_blank" class="card-title">${video['Title']}</a>
                 <div class="card-subtitle">${formatNumber(video['Views'])} views</div>
+                <div class="card-subtitle">${formatNumber(video['Subscribers'])} subscribers</div>
                 <label class="viewed-checkbox">
                     <input type="checkbox" onchange="toggleVisibility(${index})"> Viewed?
                 </label>
