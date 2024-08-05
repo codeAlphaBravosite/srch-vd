@@ -27,18 +27,33 @@ function applyFilters() {
     let filteredData = [...originalData];
 
     filteredData.sort((a, b) => {
-        let comparison = 0;
+        let subscriberComparison = 0;
+        let viewComparison = 0;
+
+        // Compare subscribers
         if (subscriberSort !== 'none') {
             const subsA = a['Subscriber'] === 'N/A' ? -1 : parseInt(a['Subscriber']);
             const subsB = b['Subscriber'] === 'N/A' ? -1 : parseInt(b['Subscriber']);
-            comparison = subscriberSort === 'ascending' ? subsA - subsB : subsB - subsA;
+            subscriberComparison = subscriberSort === 'ascending' ? subsA - subsB : subsB - subsA;
         }
-        if (comparison === 0 && viewSort !== 'none') {
+
+        // Compare views
+        if (viewSort !== 'none') {
             const viewsA = parseInt(a['Views'] || 0);
             const viewsB = parseInt(b['Views'] || 0);
-            comparison = viewSort === 'ascending' ? viewsA - viewsB : viewsB - viewsA;
+            viewComparison = viewSort === 'ascending' ? viewsA - viewsB : viewsB - viewsA;
         }
-        return comparison;
+
+        // Prioritize subscriber sort, then view sort
+        if (subscriberSort !== 'none' && viewSort !== 'none') {
+            return subscriberComparison || viewComparison;
+        } else if (subscriberSort !== 'none') {
+            return subscriberComparison;
+        } else if (viewSort !== 'none') {
+            return viewComparison;
+        }
+
+        return 0; // No sorting if both are 'none'
     });
 
     displayCards(filteredData);
@@ -108,12 +123,6 @@ if (currentTheme) {
     }
 }
 
-// Initialize
-document.getElementById('filterContainer').style.display = 'none';
-document.getElementById('csvFileInput').addEventListener('change', loadFile);
-document.getElementById('subscriberSort').addEventListener('change', applyFilters);
-document.getElementById('viewSort').addEventListener('change', applyFilters);
-
 // Debounce function for performance optimization
 function debounce(func, wait) {
     let timeout;
@@ -129,6 +138,12 @@ function debounce(func, wait) {
 
 // Apply debounce to applyFilters function
 const debouncedApplyFilters = debounce(applyFilters, 300);
+
+// Initialize
+document.getElementById('filterContainer').style.display = 'none';
+document.getElementById('csvFileInput').addEventListener('change', loadFile);
+document.getElementById('subscriberSort').addEventListener('change', debouncedApplyFilters);
+document.getElementById('viewSort').addEventListener('change', debouncedApplyFilters);
 
 // Error handling for fetch failures
 window.addEventListener('error', function(e) {
