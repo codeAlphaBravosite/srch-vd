@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube Video Viewer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
     <header>
-        <h1>YouTube Video Viewer (upload CSV to start)</h1>
+        <h1>YouTube Video Viewer</h1>
         <div class="theme-switch-wrapper">
             <label class="theme-switch" for="checkbox">
                 <input type="checkbox" id="checkbox" />
@@ -20,32 +19,36 @@
     </header>
 
     <main>
-        <input type="file" id="csvFileInput" accept=".csv">
-        
+        <div class="upload-container">
+            <label for="csvFileInput" class="file-input-label">
+                Upload CSV
+                <input type="file" id="csvFileInput" accept=".csv" />
+            </label>
+        </div>
+
+        <div id="statsContainer" style="display: none;">
+            <p>Total Videos: <span id="totalVideos">0</span></p>
+            <p>Viewed: <span id="viewedVideos">0</span></p>
+            <p>Remaining: <span id="remainingVideos">0</span></p>
+        </div>
+
         <div id="filterContainer" style="display: none;">
-            <div class="filter-group">
-                <select id="subscriberSort">
-                    <option value="none">Sort by Subscribers: None</option>
-                    <option value="ascending">Sort by Subscribers: Ascending</option>
-                    <option value="descending">Sort by Subscribers: Descending</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <select id="viewSort">
-                    <option value="none">Sort by Views: None</option>
-                    <option value="ascending">Sort by Views: Ascending</option>
-                    <option value="descending">Sort by Views: Descending</option>
-                </select>
-            </div>
+            <select id="subscriberSort">
+                <option value="none">Sort by Subscribers</option>
+                <option value="ascending">Subscribers ↑</option>
+                <option value="descending">Subscribers ↓</option>
+            </select>
+            <select id="viewSort">
+                <option value="none">Sort by Views</option>
+                <option value="ascending">Views ↑</option>
+                <option value="descending">Views ↓</option>
+            </select>
         </div>
 
         <div id="cards"></div>
     </main>
 
-    <footer>
-        <p>&copy; YT Tools Hub</p>
-    </footer>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
