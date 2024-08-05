@@ -20,12 +20,22 @@
     <input type="file" id="csvFileInput" accept=".csv" onchange="loadFile(event)">
 
     <div id="filterContainer" style="display: none;">
-        Sort by Views: 
-        <select id="sortOrder" onchange="applySorting()">
-            <option value="none">None</option>
-            <option value="ascending">Ascending</option>
-            <option value="descending">Descending</option>
-        </select>
+        <div class="filter-group">
+            <label for="subscriberSort">Sort by Subscribers:</label>
+            <select id="subscriberSort" onchange="applyFilters()">
+                <option value="none">None</option>
+                <option value="ascending">Ascending</option>
+                <option value="descending">Descending</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="viewSort">Sort by Views:</label>
+            <select id="viewSort" onchange="applyFilters()">
+                <option value="none">None</option>
+                <option value="ascending">Ascending</option>
+                <option value="descending">Descending</option>
+            </select>
+        </div>
     </div>
 
     <div id="cards"></div>
