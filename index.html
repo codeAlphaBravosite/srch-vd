@@ -4,41 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube Video Viewer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
-    <div class="theme-switch-wrapper">
-        <label class="theme-switch" for="checkbox">
-            <input type="checkbox" id="checkbox" />
-            <div class="slider round"></div>
-        </label>
-    </div>
-
-    <h1>YouTube Video Viewer (upload CSV to start)</h1>
-
-    <input type="file" id="csvFileInput" accept=".csv" onchange="loadFile(event)">
-
-    <div id="filterContainer" style="display: none;">
-        <div class="filter-group">
-            <label for="subscriberSort">Sort by Subscribers:</label>
-            <select id="subscriberSort" onchange="applyFilters()">
-                <option value="none">None</option>
-                <option value="ascending">Ascending</option>
-                <option value="descending">Descending</option>
-            </select>
+    <header>
+        <h1>YouTube Video Viewer (upload CSV to start)</h1>
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <div class="slider round"></div>
+            </label>
         </div>
-        <div class="filter-group">
-            <label for="viewSort">Sort by Views:</label>
-            <select id="viewSort" onchange="applyFilters()">
-                <option value="none">None</option>
-                <option value="ascending">Ascending</option>
-                <option value="descending">Descending</option>
-            </select>
-        </div>
-    </div>
+    </header>
 
-    <div id="cards"></div>
+    <main>
+        <input type="file" id="csvFileInput" accept=".csv" aria-label="Upload CSV file">
+
+        <div id="filterContainer" style="display: none;">
+            <div class="filter-group">
+                <label for="subscriberSort">Sort by Subscribers:</label>
+                <select id="subscriberSort">
+                    <option value="none">None</option>
+                    <option value="ascending">Ascending</option>
+                    <option value="descending">Descending</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="viewSort">Sort by Views:</label>
+                <select id="viewSort">
+                    <option value="none">None</option>
+                    <option value="ascending">Ascending</option>
+                    <option value="descending">Descending</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="cards"></div>
+    </main>
+
+    <footer>
+        <p>&copy; YT Tools Hub</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
