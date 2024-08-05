@@ -7,7 +7,7 @@ function loadFile(event) {
         complete: function(results) {
             originalData = results.data.map(item => ({
                 ...item,
-                Subscribers: item.Subscribers || 'N/A',
+                Subscriber: item.Subscriber || 'N/A',
                 Views: item.Views || '0'
             }));
             displayCards(originalData);
@@ -29,8 +29,8 @@ function applyFilters() {
     filteredData.sort((a, b) => {
         let comparison = 0;
         if (subscriberSort !== 'none') {
-            const subsA = a['Subscribers'] === 'N/A' ? -1 : parseInt(a['Subscribers']);
-            const subsB = b['Subscribers'] === 'N/A' ? -1 : parseInt(b['Subscribers']);
+            const subsA = a['Subscriber'] === 'N/A' ? -1 : parseInt(a['Subscriber']);
+            const subsB = b['Subscriber'] === 'N/A' ? -1 : parseInt(b['Subscriber']);
             comparison = subscriberSort === 'ascending' ? subsA - subsB : subsB - subsA;
         }
         if (comparison === 0 && viewSort !== 'none') {
@@ -68,7 +68,7 @@ function displayCards(data) {
             <div class="card-content">
                 <a href="https://www.youtube.com/watch?v=${video['Video Id']}" target="_blank" class="card-title">${video['Title']}</a>
                 <div class="card-subtitle">${formatNumber(video['Views'])} views</div>
-                <div class="card-subtitle">${formatNumber(video['Subscribers'])} subscribers</div>
+                <div class="card-subtitle">${formatNumber(video['Subscriber'])} subscribers</div>
                 <label class="viewed-checkbox">
                     <input type="checkbox" onchange="toggleVisibility(${index})"> Viewed?
                 </label>
