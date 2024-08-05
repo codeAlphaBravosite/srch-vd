@@ -1,4 +1,5 @@
 let originalData = [];
+let viewedCount = 0;
 
 function loadFile(event) {
     const file = event.target.files[0];
@@ -12,6 +13,8 @@ function loadFile(event) {
             }));
             displayCards(originalData);
             document.getElementById('filterContainer').style.display = 'flex';
+            document.getElementById('statsContainer').style.display = 'flex';
+            updateStats();
         },
         error: function(error) {
             console.error('Error parsing CSV:', error);
@@ -30,21 +33,18 @@ function applyFilters() {
         let subscriberScore = 0;
         let viewScore = 0;
 
-        // Calculate subscriber score
         if (subscriberSort !== 'none') {
             const subsA = a['Subscriber'] === 'N/A' ? -1 : parseInt(a['Subscriber']);
             const subsB = b['Subscriber'] === 'N/A' ? -1 : parseInt(b['Subscriber']);
             subscriberScore = subscriberSort === 'ascending' ? subsA - subsB : subsB - subsA;
         }
 
-        // Calculate view score
         if (viewSort !== 'none') {
             const viewsA = parseInt(a['Views'] || 0);
             const viewsB = parseInt(b['Views'] || 0);
             viewScore = viewSort === 'ascending' ? viewsA - viewsB : viewsB - viewsA;
         }
 
-        // Combine scores
         return subscriberScore + viewScore;
     });
 
@@ -73,24 +73,36 @@ function displayCards(data) {
         card.innerHTML = `
             <img src="${thumbnailUrl}" alt="${video['Title']}" class="thumbnail" loading="lazy">
             <div class="card-content">
-                <a href="https://www.youtube.com/watch?v=${video['Video Id']}" target="_blank" class="card-title">${video['Title']}</a>
-                <div class="card-subtitle">${formatNumber(video['Views'])} views</div>
-                <div class="card-subtitle">${formatNumber(video['Subscriber'])} subscribers</div>
+                <h2 class="card-title">${video['Title']}</h2>
+                <div class="card-stats">
+                    ${formatNumber(video['Views'])} views • ${formatNumber(video['Subscriber'])} subscribers
+                </div>
                 <label class="viewed-checkbox">
-                    <input type="checkbox" onchange="toggleVisibility(${index})"> Viewed?
+                    <input type="checkbox" onchange="toggleVisibility(${index})"> Viewed
                 </label>
             </div>
         `;
         cardsContainer.appendChild(card);
     });
+    updateStats();
 }
 
 function toggleVisibility(index) {
     const card = document.querySelector(`.card[data-index='${index}']`);
     card.classList.toggle('viewed');
+    updateStats();
 }
 
-// Dark mode toggle
+function updateStats() {
+    const totalVideos = originalData.length;
+    viewedCount = document.querySelectorAll('.card.viewed').length;
+    const remainingVideos = totalVideos - viewedCount;
+
+    document.getElementById('totalVideos').textContent = totalVideos;
+    document.getElementById('viewedVideos').textContent = viewedCount;
+    document.getElementById('remainingVideos').textContent = remainingVideos;
+}
+
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
 
 function switchTheme(e) {
@@ -105,17 +117,14 @@ function switchTheme(e) {
 
 toggleSwitch.addEventListener('change', switchTheme, false);
 
-// Check for saved user preference, if any, on load of the website
 const currentTheme = localStorage.getItem('theme');
 if (currentTheme) {
     document.body.classList[currentTheme === 'dark' ? 'add' : 'remove']('dark-mode');
-
     if (currentTheme === 'dark') {
         toggleSwitch.checked = true;
     }
 }
 
-// Debounce function for performance optimization
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -128,16 +137,13 @@ function debounce(func, wait) {
     };
 }
 
-// Apply debounce to applyFilters function
 const debouncedApplyFilters = debounce(applyFilters, 300);
 
-// Initialize
 document.getElementById('filterContainer').style.display = 'none';
 document.getElementById('csvFileInput').addEventListener('change', loadFile);
 document.getElementById('subscriberSort').addEventListener('change', debouncedApplyFilters);
 document.getElementById('viewSort').addEventListener('change', debouncedApplyFilters);
 
-// Error handling for fetch failures
 window.addEventListener('error', function(e) {
     console.error('Error occurred:', e.error);
     alert('An error occurred. Please check your internet connection and try again.');
