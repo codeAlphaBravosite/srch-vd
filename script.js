@@ -73,7 +73,9 @@ function displayCards(data) {
         card.innerHTML = `
             <img src="${thumbnailUrl}" alt="${video['Title']}" class="thumbnail" loading="lazy">
             <div class="card-content">
-                <h2 class="card-title">${video['Title']}</h2>
+                <h2 class="card-title">
+                    <a href="https://www.youtube.com/watch?v=${video['Video Id']}" target="_blank" rel="noopener noreferrer">${video['Title']}</a>
+                </h2>
                 <div class="card-stats">
                     ${formatNumber(video['Views'])} views • ${formatNumber(video['Subscriber'])} subscribers
                 </div>
