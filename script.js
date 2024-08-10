@@ -13,7 +13,6 @@ function loadFile(event) {
             }));
             displayCards(originalData);
             document.getElementById('filterContainer').style.display = 'flex';
-            document.getElementById('statsContainer').style.display = 'flex';
             updateStats();
         },
         error: function(error) {
@@ -105,6 +104,18 @@ function updateStats() {
     document.getElementById('remainingVideos').textContent = remainingVideos;
 }
 
+function handleScroll() {
+    const statsContainer = document.getElementById('statsContainer');
+    const filterContainer = document.getElementById('filterContainer');
+    const rect = filterContainer.getBoundingClientRect();
+    
+    if (rect.top <= 0) {
+        statsContainer.classList.add('sticky');
+    } else {
+        statsContainer.classList.remove('sticky');
+    }
+}
+
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
 
 function switchTheme(e) {
@@ -141,12 +152,10 @@ function debounce(func, wait) {
 
 const debouncedApplyFilters = debounce(applyFilters, 300);
 
-document.getElementById('filterContainer').style.display = 'none';
 document.getElementById('csvFileInput').addEventListener('change', loadFile);
 document.getElementById('subscriberSort').addEventListener('change', debouncedApplyFilters);
 document.getElementById('viewSort').addEventListener('change', debouncedApplyFilters);
+window.addEventListener('scroll', handleScroll);
 
 window.addEventListener('error', function(e) {
-    console.error('Error occurred:', e.error);
-    alert('An error occurred. Please check your internet connection and try again.');
-});
+    console.error('
