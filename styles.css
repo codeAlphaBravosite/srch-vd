@@ -149,7 +149,7 @@ select {
     display: flex;
     align-items: center;
     font-size: 14px;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .viewed-checkbox input[type="checkbox"] {
@@ -195,7 +195,7 @@ select {
 }
 
 input:checked + .slider {
-    background-color: var(--switch-checked-bg);
+    background-color: #FF0000;
 }
 
 input:checked + .slider:before {
