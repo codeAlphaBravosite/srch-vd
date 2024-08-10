@@ -104,7 +104,7 @@ select {
 }
 
 .card.viewed {
-    opacity: 0.7;
+    opacity: 0.2;
 }
 
 .thumbnail {
