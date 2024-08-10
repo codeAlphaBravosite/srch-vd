@@ -55,7 +55,7 @@ h1 {
 }
 
 .file-input-label:hover {
-    background-color: #2980b9;
+    background-color: #FF0000;
 }
 
 #csvFileInput {
@@ -149,7 +149,7 @@ select {
     display: flex;
     align-items: center;
     font-size: 14px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .viewed-checkbox input[type="checkbox"] {
