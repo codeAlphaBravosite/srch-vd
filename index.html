@@ -18,18 +18,16 @@
         </div>
     </header>
 
-    <main>
+    <main role="main">
         <div class="upload-container">
-            <label for="csvFileInput" class="file-input-label">
-                Upload CSV
-                <input type="file" id="csvFileInput" accept=".csv" />
-            </label>
+            <label for="csvFileInput" class="file-input-label">Upload CSV</label>
+            <input type="file" id="csvFileInput" accept=".csv" />
         </div>
 
-        <div id="statsContainer" style="display: none;">
-            <p>Total Videos: <span id="totalVideos">0</span></p>
-            <p>Viewed: <span id="viewedVideos">0</span></p>
-            <p>Remaining: <span id="remainingVideos">0</span></p>
+        <div id="statsContainer">
+            <div>Total Videos: <span id="totalVideos">0</span></div>
+            <div>Viewed: <span id="viewedVideos">0</span></div>
+            <div>Remaining: <span id="remainingVideos">0</span></div>
         </div>
 
         <div id="filterContainer" style="display: none;">
