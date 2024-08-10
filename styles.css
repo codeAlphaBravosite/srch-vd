@@ -104,7 +104,7 @@ select {
 }
 
 .card.viewed {
-    opacity: 0.2;
+    opacity: 0.4;
 }
 
 .thumbnail {
@@ -149,7 +149,7 @@ select {
     display: flex;
     align-items: center;
     font-size: 14px;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 .viewed-checkbox input[type="checkbox"] {
